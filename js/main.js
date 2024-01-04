@@ -1,5 +1,5 @@
 // Initialize web worker
-const waveWorker = new Worker('wave-worker.js');
+const waveWorker = new Worker('/js/wave-worker.js');
 
 const amplitudeRange = document.getElementById('amplitudeRange');
 const frequencyRange = document.getElementById('frequencyRange');
