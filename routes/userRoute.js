@@ -14,13 +14,14 @@ route.post("/register", async (req, res) => {
 
     try {
         const { name, email, password } = req.body;
+        console.log(name + " " + email + " " + password);
         if (!name || !email || !password) {
-            return res.json({ message: 'Please enter all the details' })
+            return res.status(400).send({ message: 'Please enter all the details' })
         }
 
         const userExist = await userModel.findOne({ email: req.body.email });
         if (userExist) {
-            return res.json({ message: 'User already exist with the given emailId' })
+            return res.status(409).send({ message: 'User already exist with the given email' })
         }
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(req.body.password, salt);
@@ -42,17 +43,17 @@ route.post('/login', async (req, res) => {
         const { email, password } = req.body;
         //Check emptyness of the incoming data
         if (!email || !password) {
-            return res.json({ message: 'Please enter all the details' })
+            return res.status(401).send({ error: 'Please enter all the details' })
         }
         //Check if the user already exist or not
         const userExist = await userModel.findOne({ email: req.body.email });
         if (!userExist) {
-            return res.json({ message: 'Wrong credentials' })
+            return res.status(401).send({ error: 'Wrong credentials' })
         }
         //Check password match
         const isPasswordMatched = await bcrypt.compare(password, userExist.password);
         if (!isPasswordMatched) {
-            return res.json({ message: 'Wrong credentials pass' });
+            return res.status(401).send({ error: 'Wrong credentials pass' });
         }
         const token =  jwt.sign({ id: userExist._id }, process.env.SECRET_KEY, {
             expiresIn: process.env.JWT_EXPIRE,

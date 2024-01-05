@@ -6,6 +6,7 @@
   <title>Wave Simulator</title>
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/main-page-actions.js"></script>
+  <script src="/js/rest.js"></script>
 </head>
 
 <body>
@@ -15,10 +16,11 @@
         <path
           d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
       </svg></span>
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/c38H6UKt3_I?si=6GvT-pAzDtOnG0V0"
-      title="Media player with video about waves" frameborder="0"
+    <iframe id="wave-video-player" src="https://www.youtube.com/embed/c38H6UKt3_I?si=6GvT-pAzDtOnG0V0"
+      title="Media player with video about waves"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen></iframe>
+      allowfullscreen>
+    </iframe>
   </div>
   <div class="styled-div focused-div" id="knowledge-content">
     <span class="close-icon" onclick="closeKnowledgePage()"><svg xmlns="http://www.w3.org/2000/svg" height="16"
@@ -54,6 +56,14 @@
       </ul>
       <a href="https://en.wikipedia.org/wiki/Wave" target="_blank">Read more on Wikipedia</a>
     </article>
+  </div>
+  <div class="styled-div focused-div" id="login-register-logout-div">
+    <span class="close-icon" onclick="closeUserDiv()"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="12"
+        viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+        <path
+          d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+      </svg></span>
+    <div id="user-div-content"></div>
   </div>
   <div class="big-div">
     <canvas id="waveCanvas" width="1200" height="300"></canvas>
@@ -107,8 +117,8 @@
       <p>Become a member to get access to premium features</p>
     </div>
     <div>
-      <button id="sign-in-button">Sign in</button>
-      <button id="sign-iup-button">Sign up</button>
+      <button id="sign-in-button" onclick="displaySignInForm()">Sign in</button>
+      <button id="sign-up-button" onclick="displaySignUpForm()">Sign up</button>
     </div>
   </div>
   <script src="/js/main.js"></script>
