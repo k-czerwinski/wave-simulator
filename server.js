@@ -2,7 +2,6 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const dotenv = require('dotenv');
 
-const displayLogoutDiv = require('./public/js/main-page-actions').displayLogoutDiv;
 const isAuthenticated = require('./middleware/auth');
 
 //Configure dotenv files above using any other library and files
@@ -26,9 +25,6 @@ app.listen(process.env.PORT, () => {
 })
 
 app.get('/', function (req, res) {
-  if (req.isAuthenticated) {
-    console.log('AUTHENTICATED');
-  }
   res.sendFile(__dirname + '/public/html/index.html');
 })
 
