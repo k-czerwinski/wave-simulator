@@ -1,0 +1,15 @@
+<h2>Sign up</h2>
+<form name='register-form' id='register-form' class='user-form' action='#' onsubmit='return proceedSignUpForm(event)'
+  method='post'>
+  <label for='register-name'>Name:</label>
+  <input type='text' name='register-name' id='register-name' minlength='4' maxlength='20' autocomplete='name' required>
+  <label for='register-email'>Email:</label>
+  <input type='email' name='register-email' id='register-email' minlength='5' autocomplete='email' required>
+  <label for='register-password'>Password:</label>
+  <input type='password' name='register-password' id='register-password' minlength='8' maxlength='40'
+    autocomplete='new-password' required>
+  <label for='confirm-password'>Confirm password:</label>
+  <input type='password' name='confirm-password' id='confirm-password' minlength='8' maxlength='40'
+    autocomplete='new-password' required>
+  <button>Submit</button>
+</form>

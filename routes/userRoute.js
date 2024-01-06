@@ -55,11 +55,11 @@ route.post('/login', async (req, res) => {
         if (!isPasswordMatched) {
             return res.status(401).send({ error: 'Wrong credentials pass' });
         }
-        const token =  jwt.sign({ id: userExist._id }, process.env.SECRET_KEY, {
+        const token = jwt.sign({ id: userExist._id }, process.env.SECRET_KEY, {
             expiresIn: process.env.JWT_EXPIRE,
         });
-        
-        return res.cookie("token",token).json({ success: true, message: 'LoggedIn Successfully', token: token })
+
+        return res.cookie("token", token, { maxAge: 600000 }).json({ success: true, message: 'LoggedIn Successfully', token: token })
     } catch (error) {
         return res.json({ error: error });
     }
@@ -79,5 +79,14 @@ route.get('/user', isAuthenticated, async (req, res) => {
         return res.json({ error: error });
     }
 })
+
+route.post('/logout', (req, res) => {
+    res.clearCookie("token");
+    return res.json({ success: true, message: 'Logged out successfully' });
+});
+
+route.get('/isAuthenticated', isAuthenticated, (req, res) => {
+    return res.json({ success: true, message: 'Authenticated' });
+});
 
 module.exports = route;

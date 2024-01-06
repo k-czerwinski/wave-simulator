@@ -1,3 +1,27 @@
+fetch('http://localhost:8080/')
+  .then(response => response.text())
+  .then(data => {
+    return fetch('http://localhost:8080/api/isAuthenticated', {
+      credentials: 'include'
+    });
+  })
+  .then(response => {
+    if (response.status === 200) {
+      response.json().then(data => {
+        if (data.success === true) {
+          displaySignedInUserContent();
+        } else {
+          displaySignedOutUserContent();
+        }
+      });
+    } else {
+      displaySignedOutUserContent();
+    }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+
 function displayKnowledgePage() {
   document.getElementById('knowledge-content').style.display = 'block';
   blurBackground('knowledge-content');
@@ -47,33 +71,21 @@ function updateAmplitudeValue(newValue) {
 function displaySignInForm() {
   document.getElementById('login-register-logout-div').style.display = 'block';
   blurBackground('login-register-logout-div');
-  var loginForm = "<h2>Sign in</h2>"
-    + "<form name='login-form' id='login-form' class='user-form' action='#' method='post' onsubmit='proceedSignInForm(event)'>"
-    + "<label for='email'>Email:</label>"
-    + "<input type='email' name='email' id='email' autocomplete='email' required>"
-    + "<label for='password'>Password:</label>"
-    + "<input type='password' name='password' id='password' autocomplete='current-password' required>"
-    + "<button>Submit</button>"
-    + "</form>";
-  document.getElementById('user-div-content').innerHTML += loginForm;
+  fetch('/html/login-form.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('user-div-content').innerHTML = data;
+    })
 }
 
 function displaySignUpForm() {
   document.getElementById('login-register-logout-div').style.display = 'block';
   blurBackground('login-register-logout-div');
-  var registerForm = "<h2>Sign up</h2>"
-    + "<form name='register-form' id='register-form' class='user-form' action='#' onsubmit='return proceedSignUpForm(event)' method='post'>"
-    + "<label for='register-name'>Name:</label>"
-    + "<input type='text' name='register-name' id='register-name' minlength='4' maxlength='20' autocomplete='name' required>"
-    + "<label for='register-email'>Email:</label>"
-    + "<input type='email' name='register-email' id='register-email' minlength='5' autocomplete='email' required>"
-    + "<label for='register-password'>Password:</label>"
-    + "<input type='password' name='register-password' id='register-password' minlength='8' maxlength='40' autocomplete='new-password' required>"
-    + "<label for='confirm-password'>Confirm password:</label>"
-    + "<input type='password' name='confirm-password' id='confirm-password' minlength='8' maxlength='40' autocomplete='new-password' required>"
-    + "<button>Submit</button>"
-    + "</form>";
-    document.getElementById('user-div-content').innerHTML += registerForm;
+  fetch('/html/register-form.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('user-div-content').innerHTML = data;
+    })
 }
 
 function closeUserDiv() {
@@ -128,32 +140,33 @@ function proceedSignInForm(event) {
     },
     body: JSON.stringify(data),
   })
-  .then(response => {
-    if (response.status === 200) {
-      return response.json().then(data => {
-        console.log('Success:', data);
-        closeUserDiv();
-        displaySuccessfullLoginMessage();
-        return true;
-      });
-    } else if (response.status === 401) {
-      return response.json().then(data => {
-        console.error('Unauthorized:', data);
-        unsuccessfullLoginHandler();
-        return false;
-      });
-    } else {
-      // Handle other responses
-      return response.json().then(data => {
-        console.error('Error:', data);
-        return false;
-      });
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-    return false;
-  });
+    .then(response => {
+      if (response.status === 200) {
+        return response.json().then(data => {
+          console.log('Success:', data);
+          closeUserDiv();
+          displaySignedInUserContent();
+          displaySuccessfullLoginMessage();
+          return true;
+        });
+      } else if (response.status === 401) {
+        return response.json().then(data => {
+          console.error('Unauthorized:', data);
+          unsuccessfullLoginHandler();
+          return false;
+        });
+      } else {
+        // Handle other responses
+        return response.json().then(data => {
+          console.error('Error:', data);
+          return false;
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      return false;
+    });
 }
 
 function proceedSignUpForm(event) {
@@ -179,34 +192,34 @@ function proceedSignUpForm(event) {
     },
     body: JSON.stringify(data),
   })
-  .then(response => {
-    if (response.status === 200) {
-      return response.json().then(data => {
-        console.log('Success:', data);
-        closeUserDiv();
-        displaySuccessfullRegisterMessage();
-      });
-    } else if (response.status === 400) {
-      return response.json().then(data => {
-        console.error('Some fields was not filled:', data);
-        unsuccessfullRegisterHandler(data.message);
-      });
-    } else if (response.status === 409) {
-      return response.json().then(data => {
-        console.error('User with given email already exist already exists:', data);
-        unsuccessfullRegisterHandler(data.message);
-      });
-    } 
-    else {
-      // Handle other responses
-      return response.json().then(data => {
-        console.error('Error:', data);
-      });
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+    .then(response => {
+      if (response.status === 200) {
+        return response.json().then(data => {
+          console.log('Success:', data);
+          closeUserDiv();
+          displaySuccessfullRegisterMessage();
+        });
+      } else if (response.status === 400) {
+        return response.json().then(data => {
+          console.error('Some fields was not filled:', data);
+          unsuccessfullRegisterHandler(data.message);
+        });
+      } else if (response.status === 409) {
+        return response.json().then(data => {
+          console.error('User with given email already exist already exists:', data);
+          unsuccessfullRegisterHandler(data.message);
+        });
+      }
+      else {
+        // Handle other responses
+        return response.json().then(data => {
+          console.error('Error:', data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 function displaySuccessfullLoginMessage() {
@@ -230,4 +243,54 @@ function displaySuccessfullRegisterMessage() {
 
 function unsuccessfullRegisterHandler(message) {
   alert(message);
+}
+
+function logout() {
+  fetch('http://localhost:8080/api/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => {
+      if (response.status === 200) {
+        return response.json().then(data => {
+          console.log('Success:', data);
+          displaySignedOutUserContent();
+          return true;
+        });
+      } else {
+        // Handle other responses
+        return response.json().then(data => {
+          console.error('Error:', data);
+          return false;
+        });
+      }
+    }
+    )
+    .catch((error) => {
+      console.error('Error:', error);
+      return false;
+    });
+}
+
+function displayLoginRegisterDiv() {
+  fetch('/html/user-actions-div-login-register.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('user-actions-div').innerHTML = data;
+    })
+}
+
+function displaySignedInUserContent() {
+  var logout = "<div class='small-div-title'><h3>Logout</h3><button onclick='logout()'>Logout</button></div>";
+  document.getElementById('user-actions-div').innerHTML = logout;
+}
+
+function displaySignedOutUserContent() {
+  fetch('/html/user-actions-div-signed-out.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('user-actions-div').innerHTML = data;
+    })
 }
