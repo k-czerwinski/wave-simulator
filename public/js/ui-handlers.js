@@ -32,6 +32,18 @@ function removeBlur() {
   });
 }
 
+function updateSpeedValue(newValue) {
+  document.getElementById("speedValue").innerHTML = newValue + "m/s";
+}
+
+function updateFrequencyValue(newValue) {
+  document.getElementById("frequencyValue").innerHTML = newValue + "Hz";
+}
+
+function updateAmplitudeValue(newValue) {
+  document.getElementById("amplitudeValue").innerHTML = newValue + "m";
+}
+
 function displaySignInForm() {
   document.getElementById('login-register-logout-div').style.display = 'block';
   blurBackground('login-register-logout-div');
@@ -117,7 +129,7 @@ function displaySignedInUserContent() {
   displaySimulatorModeDiv();
   displayAuthorizedUserActionDiv();
   displayWaveProfilesDiv();
-  document.getElementById('wave-properties-div-buttons').innerHTML = "<button onclick='saveProperties()'>Save</button>";
+  document.getElementById('wave-properties-div-buttons').innerHTML = "<button onclick='saveWaveProfile()'>Save</button>";
 }
 
 function displaySignedOutUserContent() {
@@ -159,7 +171,7 @@ function hideSimulatorModeDiv() {
 
 function displayWaveProfilesDiv() {
   document.getElementById('wave-profiles-div').style.display = 'block';
-  // fetch wave profiles from server and add them to the div
+  fetchWaveProfilesForUser();
 }
 
 function hideWaveProfilesDiv() {
@@ -191,4 +203,8 @@ function grayOutDiv(divId) {
 function removeGrayOutDiv(divId) {
   var div = document.getElementById(divId);
   div.classList.remove('overlay');
+}
+
+function applyWaveProfile() {
+  // get wave profile parameters and display animation based on them
 }

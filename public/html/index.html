@@ -97,17 +97,19 @@
     <div class="wave-property-setting">
       <label for="amplitudeRange">Amplitude:</label>
       <output id="amplitudeValue">0.5m</output><br>
-      <input type="range" id="amplitudeRange" min="1" max="100" value="50">
+      <input type="range" id="amplitudeRange" onchange="updateAmplitudeValue(this.value)" min="0.01" max="1" value="0.5"
+        step="0.01">
     </div>
     <div class="wave-property-setting">
       <label for="frequencyRange">Frequency:</label>
       <output id="frequencyValue">10Hz</output><br>
-      <input type="range" id="frequencyRange" min="1" max="20" value="10">
+      <input type="range" id="frequencyRange" onchange="updateFrequencyValue(this.value)" min="1" max="20" value="10">
     </div>
     <div class="wave-property-setting">
-      <label for="speedRange">Speed:</label>
+      <label for="speedRange">Velocity:</label>
       <output id="speedValue">1 m/s</output><br>
-      <input type="range" id="speedRange" min="0.1" max="5" step="0.1" value="1">
+      <input type="range" id="speedRange" onchange="updateSpeedValue(this.value)" min="0.1" max="5" step="0.1"
+        value="1">
     </div>
     <div id="wave-properties-div-buttons"></div>
   </div>
@@ -120,6 +122,7 @@
       <div id="wave-profiles-div-content">
         <!-- selection of profiles fetched from server -->
       </div>
+      <p>Click apply to show animation with selected profile</p>
       <button onclick="applyWaveProfile()">Apply</button>
     </div>
   </div>

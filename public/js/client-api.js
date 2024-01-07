@@ -154,3 +154,82 @@ function logout() {
       return false;
     });
 }
+
+function saveWaveProfile() {
+  getUserId().then(userId => {
+    var waveProfile = {
+      amplitude: document.getElementById('amplitudeRange').value,
+      frequency: document.getElementById('frequencyRange').value,
+      speed: document.getElementById('speedRange').value,
+      "userId": userId
+    };
+
+    fetch('/api/saveWaveProfile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(waveProfile)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          alert('Wave profile saved successfully!');
+        } else {
+          alert('Error saving wave profile!');
+        }
+      });
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+function fetchWaveProfilesForUser() {
+  getUserId().then(userId => {
+    fetch('/api/getWaveProfilesForUser', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'userId': userId
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          var select = document.createElement('select');
+          data.data.forEach(profile => {
+            var option = document.createElement('option');
+            option.value = profile.id;
+            option.textContent = `A:${profile.amplitude}m, f:${profile.frequency}Hz, v:${profile.speed}m/s`;
+            select.appendChild(option);
+          });
+          document.getElementById('wave-profiles-div-content').appendChild(select);
+        } else {
+          alert('Error fetching wave profiles!');
+        }
+      });
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+function getUserId() {
+  return new Promise((resolve, reject) => {
+    fetch('/api/getUserId', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          resolve(data.userId);
+        } else {
+          reject('Error fetching user id!');
+        }
+      })
+      .catch(err => reject(err));
+  });
+}
