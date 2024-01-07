@@ -135,12 +135,26 @@ function displaySimulatorModeDiv() {
     .then(data => {
       simulatorModeDiv.innerHTML = data;
     });
+
+  grayOutDiv('wave-profiles-div');
+  simulatorModeDiv.addEventListener('change', function (event) {
+    if (event.target.id === 'toggle') {
+      if (event.target.checked) {
+        grayOutDiv('wave-properties-div');
+        removeGrayOutDiv('wave-profiles-div');
+      } else {
+        grayOutDiv('wave-profiles-div');
+        removeGrayOutDiv('wave-properties-div');
+      }
+    }
+  });
 }
 
 function hideSimulatorModeDiv() {
   var simulatorModeDiv = document.getElementById('simulator-mode-div');
   simulatorModeDiv.innerHTML = '';
   simulatorModeDiv.style.display = 'none';
+  removeGrayOutDiv('wave-properties-div');
 }
 
 function displayWaveProfilesDiv() {
@@ -167,4 +181,14 @@ function displayUnauthorizedUserActionDiv() {
     .then(data => {
       document.getElementById('user-actions-div').innerHTML = data;
     });
+}
+
+function grayOutDiv(divId) {
+  var div = document.getElementById(divId);
+  div.classList.add('overlay');
+}
+
+function removeGrayOutDiv(divId) {
+  var div = document.getElementById(divId);
+  div.classList.remove('overlay');
 }

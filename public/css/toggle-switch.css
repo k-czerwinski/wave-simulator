@@ -37,7 +37,7 @@
 }
 
 .toggle-switch-inner:before {
-  content: "Adjust";
+  content: "Select";
   padding-right: 22px;
   background-color: blue;
   color: #FFFFFF;
@@ -47,7 +47,7 @@
 }
 
 .toggle-switch-inner:after {
-  content: "Select";
+  content: "Adjust";
   padding-left: 25px;
   background-color: #EEEEEE;
   color: #999999;
