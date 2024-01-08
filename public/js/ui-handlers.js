@@ -10,11 +10,18 @@ function closeKnowledgePage() {
 
 function displayVideoPage() {
   document.getElementById('wave-video').style.display = 'block';
+  document.getElementById('wave-video-div-content').innerHTML = `<iframe id='wave - video - player' src='https://www.youtube.com/embed/c38H6UKt3_I?si=6GvT-pAzDtOnG0V0'
+  title = 'Media player with video about waves'
+  width='100%' height='100%'
+  allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+  allowfullscreen>
+  </iframe>`;
   blurBackground('wave-video');
 }
 
 function closeVideoPage() {
   document.getElementById('wave-video').style.display = 'none';
+  document.getElementById('wave-video-div-content').innerHTML = '';
   removeBlur();
 }
 
@@ -206,5 +213,20 @@ function removeGrayOutDiv(divId) {
 }
 
 function applyWaveProfile() {
-  // get wave profile parameters and display animation based on them
+  var select = document.getElementById('wave-profiles-select');
+  if (select.value === '') {
+    alert('Please select a wave profile!');
+    return;
+  }
+  var values = document.getElementById('wave-profiles-select').value.split(',');
+  var amplitude = values[0];
+  var frequency = values[1];
+  var speed = values[2];
+  document.getElementById('amplitudeRange').value = amplitude;
+  document.getElementById('frequencyRange').value = frequency;
+  document.getElementById('speedRange').value = speed;
+  updateAmplitudeValue(amplitude);
+  updateFrequencyValue(frequency);
+  updateSpeedValue(speed);
+  updateParameters();
 }

@@ -15,6 +15,7 @@ const route = require('./routes/userRoute');
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
+app.use('/favicon.ico', express.static(__dirname + '/public/images/favicon.ico'));
 
 //Using routes
 app.use('/api', route);
@@ -26,11 +27,5 @@ app.listen(process.env.PORT, () => {
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/public/html/index.html');
-})
-
-app.get('/secured', isAuthenticated, function (req, res) {
-  res.send(__dirname + '/public/html/accessDenied.html');
-  // displatLogoutDiv;
-  console.log('AUTHENTICATED');
 })
 

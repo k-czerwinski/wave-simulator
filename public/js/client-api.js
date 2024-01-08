@@ -48,7 +48,7 @@ function proceedSignUpForm(event) {
     .then(response => {
       if (response.status === 200) {
         return response.json().then(data => {
-          console.log('Success:', data);
+          console.log('Successfull registration');
           closeUserDiv();
           displaySuccessfullRegisterMessage();
         });
@@ -183,6 +183,7 @@ function saveWaveProfile() {
   }).catch(err => {
     console.log(err);
   });
+  fetchWaveProfilesForUser();
 }
 
 function fetchWaveProfilesForUser() {
@@ -196,14 +197,22 @@ function fetchWaveProfilesForUser() {
     })
       .then(response => response.json())
       .then(data => {
+        var select = document.createElement('select');
+        select.id = 'wave-profiles-select';
+        var defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select wave profile';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
         if (data.success) {
-          var select = document.createElement('select');
           data.data.forEach(profile => {
             var option = document.createElement('option');
-            option.value = profile.id;
+            option.value = `${profile.amplitude},${profile.frequency},${profile.speed}`;
             option.textContent = `A:${profile.amplitude}m, f:${profile.frequency}Hz, v:${profile.speed}m/s`;
             select.appendChild(option);
           });
+          document.getElementById('wave-profiles-div-content').innerHTML = '';
           document.getElementById('wave-profiles-div-content').appendChild(select);
         } else {
           alert('Error fetching wave profiles!');

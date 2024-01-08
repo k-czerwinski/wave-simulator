@@ -26,9 +26,5 @@ const waveProfileSchema = new mongoose.Schema({
 });
 
 const waveProfileModel = mongoose.model('waveProfiles', waveProfileSchema);
-
-waveProfileModel.findByUserId = function (userId) {
-  return this.find({ userId: userId }).exec();
-};
 module.exports = waveProfileModel;
 

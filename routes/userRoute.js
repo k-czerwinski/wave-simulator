@@ -15,7 +15,6 @@ route.post("/register", async (req, res) => {
 
     try {
         const { name, email, password } = req.body;
-        console.log(name + " " + email + " " + password);
         if (!name || !email || !password) {
             return res.status(400).send({ message: 'Please enter all the details' })
         }
@@ -32,7 +31,8 @@ route.post("/register", async (req, res) => {
         const token = await jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
             expiresIn: process.env.JWT_EXPIRE,
         });
-        return res.cookie("token", token).json({ success: true, message: 'User registered successfully', data: user })
+        console.log(`User with email: ${email} registered successfully`);
+        return res.cookie("token", token).json({ success: true, message: 'User registered successfully' })
     } catch (error) {
         return res.json({ error: error });
     }
@@ -67,20 +67,6 @@ route.post('/login', async (req, res) => {
 
 })
 
-
-// //Creating user routes to fetch users data
-// route.get('/user', isAuthenticated, async (req, res) => {
-//     try {
-//         const user = await userModel.find();
-//         if (!user) {
-//             return res.json({ message: 'No user found' })
-//         }
-//         return res.json({ user: user })
-//     } catch (error) {
-//         return res.json({ error: error });
-//     }
-// });
-
 route.get('/getUserId', isAuthenticated, async (req, res) => {
     try {
         const token = req.cookies.token;
@@ -104,9 +90,13 @@ route.get('/isAuthenticated', isAuthenticated, (req, res) => {
 
 route.get('/getWaveProfilesForUser', isAuthenticated, async (req, res) => {
     try {
-        const waveProfiles = await waveProfileModel.find({ userId: req.headers.userId });
+        const token = req.cookies.token;
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = decodedToken.id;
+        const waveProfiles = await waveProfileModel.find({ "userId": userId });
         return res.json({ success: true, message: 'Wave profiles fetched successfully', data: waveProfiles });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ "error": error });
     }
 });

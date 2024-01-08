@@ -17,11 +17,7 @@
         <path
           d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
       </svg></span>
-    <iframe id="wave-video-player" src="https://www.youtube.com/embed/c38H6UKt3_I?si=6GvT-pAzDtOnG0V0"
-      title="Media player with video about waves"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen>
-    </iframe>
+    <div id="wave-video-div-content"></div>
   </div>
   <div class="styled-div focused-div" id="knowledge-content">
     <span class="close-icon" onclick="closeKnowledgePage()"><svg xmlns="http://www.w3.org/2000/svg" height="16"
@@ -117,12 +113,12 @@
   <div class="small-div div4" id="user-actions-div"></div>
   <div class="small-div authorized-div" id="wave-profiles-div">
     <div class="small-div-title">
-      <h3>Choose wave profile</h3>
+      <h3>Wave profiles</h3>
       <p>Choose one of predefined wave profiles</p>
       <div id="wave-profiles-div-content">
         <!-- selection of profiles fetched from server -->
       </div>
-      <p>Click apply to show animation with selected profile</p>
+      <p>Click apply to display selected profile</p>
       <button onclick="applyWaveProfile()">Apply</button>
     </div>
   </div>
